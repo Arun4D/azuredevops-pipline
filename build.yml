@@ -28,7 +28,9 @@ stages:
   jobs:
   - job: 'validate_microservice_job'
     steps:
-    - task: ShellScript@2
-      inputs:
-        scriptPath: './createRepo.sh'
-        args: '${{ parameters.service }} ${{ parameters.AuthorizationHeaderText }}'
+    - script: |
+        ./createRepo.sh "$service" "$AuthorizationHeaderText"
+      displayName: 'Run Create Repo sript'
+      env:
+        service: '${{ parameters.service }}'
+        AuthorizationHeaderText: ${{ parameters.AuthorizationHeaderText }}
