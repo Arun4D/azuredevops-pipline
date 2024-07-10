@@ -20,9 +20,9 @@ parameters:
 
 stages:
 
-- stage: 'validate microservice'
+- stage: 'validate_microservice_stage'
   jobs:
-  - job: 'validate microservice'
+  - job: 'validate_microservice_job'
     steps:
     - task: ShellScript@2
       inputs:
