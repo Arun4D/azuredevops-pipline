@@ -31,6 +31,4 @@ stages:
     - task: ShellScript@2
       inputs:
         scriptPath: './createRepo.sh'
-        args: 
-        - '${{ parameters.service }}' 
-        - '${{ parameters.AuthorizationHeaderText }}'
+        args: '${{ parameters.service }} ${{ parameters.AuthorizationHeaderText }}'
