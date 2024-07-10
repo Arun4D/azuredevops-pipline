@@ -1,0 +1,30 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+
+- name: service
+  type: string
+  default: microservice-repo1
+  values: 
+  - microservice-repo1
+  - microservice2
+  - microservice3
+- name: ticketId
+  type: string
+  default: ''
+  displayName: 'Task or Ticket ID'
+
+stages:
+
+- stage: 'validate microservice'
+  jobs:
+  - job: 'validate microservice'
+    steps:
+    - task: ShellScript@2
+      inputs:
+        scriptPath: './createRepo.sh'
+        args: '${{ parameters.service }}'
