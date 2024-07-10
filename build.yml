@@ -13,10 +13,10 @@ parameters:
   - microservice-repo1
   - microservice2
   - microservice3
-  - name: AuthorizationHeaderText
-    type: string
-    default: ''
-    displayName: 'Auth header text'
+- name: AuthorizationHeaderText
+  type: string
+  default: ''
+  displayName: 'Auth header text'
 - name: ticketId
   type: string
   default: ''
