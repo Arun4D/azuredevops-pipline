@@ -1,8 +1,5 @@
 #!/bin/sh
 
-#GET https://dev.azure.com/{organization}/{project}/_apis/git/repositories?api-version=7.1-preview.1
-
-#echo -n 'Arun Duraisamy:<<PAT>>' | base64
 if [ "$#" -ne 4 ]; then
   echo "Usage: $0 <organization name> <project name> <repo name> <pipeline name>"
   exit 1
@@ -14,11 +11,6 @@ organization=$1
 project=$2
 repo=$3
 pipeline_name=$4
-
-#organization="https://dev.azure.com/YOUR_ORG_NAME"
-#project="YOUR_PROJECT_NAME"
-#repo="YOUR_REPO_NAME"
-#pipeline_name="Sample Pipeline"
 
 echo "Input Values"
 echo "organization: $organization"

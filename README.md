@@ -1,13 +1,17 @@
 # azuredevops-pipline
 
-## Scripts
+Azure DevOps master pipeline create new pipeline based on the services
 
-### [Create Repo](./createRepo.sh)
+## Build
 
-create repo if repo not exists.
+[Master build pipleline](./build.yml) has three step
 
-* Note: replace <<PAT base64 encode|>> before run the script
+1. Create Repository based on service name
+2. Clone newly created repository and create release pipeline azure-pipelines.yml file based on templates in src directory
+3. Create Release pipeline and skip first build
 
-````
-createRepo.sh microservice-repo1
-````
+## Templates
+Creates templates in src directory and map it accordingly in [cloneRepository.sh](./cloneRepository.sh) 
+
+## Deprecated
+Instead of [createRepo.sh](./createRepo.sh) use [createRepository.sh](./createRepository.sh).  [createRepo.sh](./createRepo.sh) is deprecated 

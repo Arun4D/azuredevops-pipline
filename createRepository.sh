@@ -1,8 +1,5 @@
 #!/bin/sh
 
-#GET https://dev.azure.com/{organization}/{project}/_apis/git/repositories?api-version=7.1-preview.1
-
-#echo -n 'Arun Duraisamy:<<PAT>>' | base64
 if [ "$#" -ne 3 ]; then
   echo "Usage: $0 <organization name> <project name> <repo name> "
   exit 1
