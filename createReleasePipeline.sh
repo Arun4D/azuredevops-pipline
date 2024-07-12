@@ -33,7 +33,7 @@ echo $AZURE_DEVOPS_EXT_PAT | az devops login --organization $organization
 # Azure DevOps login (you may need to authenticate if not already authenticated)
 az devops configure --defaults organization=$organization project=$project
 
-az pipelines show --name "$repo" --org "$organization" --repository "$repo" --project "$project" &> /dev/null
+az pipelines show --name "$repo" --org "$organization" --project "$project" &> /dev/null
 if [ $? -eq 0 ]; then
   echo "Pipeline $pipeline_name already exists."
 else
