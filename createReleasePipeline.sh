@@ -20,6 +20,9 @@ pipeline_name=$4
 #repo="YOUR_REPO_NAME"
 #pipeline_name="Sample Pipeline"
 
+ # Configure Azure DevOps CLI with PAT
+echo $AZURE_DEVOPS_EXT_PAT | az devops login --organization $organization
+
 # Azure DevOps login (you may need to authenticate if not already authenticated)
 az devops configure --defaults organization=$organization project=$project
 

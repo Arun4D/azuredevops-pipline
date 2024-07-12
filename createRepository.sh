@@ -13,6 +13,10 @@ organization=$1
 project=$2
 repository_name=$3
 
+ # Configure Azure DevOps CLI with PAT
+echo $AZURE_DEVOPS_EXT_PAT | az devops login --organization $organization
+
+
 # Azure DevOps login (you may need to authenticate if not already authenticated)
 az devops configure --defaults organization=$organization project=$project
 
