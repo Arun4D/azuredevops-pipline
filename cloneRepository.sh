@@ -15,9 +15,6 @@ echo "targetRepo: $targetRepo"
 echo "git_user_email: $git_user_email"
 echo "git_user_name: $git_user_name"
 echo ""
- # Configure Azure DevOps CLI with PAT
-echo $AZURE_DEVOPS_EXT_PAT | az devops login --organization $organization
-
 
 git clone https://$AZURE_DEVOPS_EXT_PAT@dev.azure.com/$targetRepo target-repo
 cd target-repo

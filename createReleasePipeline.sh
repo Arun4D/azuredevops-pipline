@@ -34,9 +34,8 @@ echo $AZURE_DEVOPS_EXT_PAT | az devops login --organization $organization
 az devops configure --defaults organization=$organization project=$project
 
 pipelines=$(az pipelines list --name "$repo" --org "$organization" --project "$project" --query [].name)
- if [ "$pipelines" == "[]" ]; then
+if [ "$pipelines" == "[]" ]; then
   echo "Pipeline $pipeline_name does not exist. Creating..."
-  # Create the pipeline using az pipelines create command
   az pipelines create --name "$pipeline_name" --org "$organization"  --project "$project" --repository "$repo" --repository-type tfsgit --branch main --yaml-path /azure-pipelines.yml  --skip-first-run true
   echo "Pipeline $pipeline_name created successfully."
   
