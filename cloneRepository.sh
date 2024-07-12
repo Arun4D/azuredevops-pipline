@@ -21,9 +21,11 @@ echo $AZURE_DEVOPS_EXT_PAT | az devops login --organization $organization
 
 git clone https://$AZURE_DEVOPS_EXT_PAT@dev.azure.com/$targetRepo target-repo
 cd target-repo
-cp ../src/bicep/azure-pipeline.yml azure-pipeline.yml 
+git config --global init.defaultBranch main
 git config --global user.email "$git_user_email"
 git config --global user.name "$git_user_name"
+git branch -m main
+cp ./src/bicep/azure-pipeline.yml azure-pipeline.yml 
 git add azure-pipeline.yml 
 git commit -m "Add azure-pipeline.yml file via Azure Pipeline"
-git push https://$AZURE_DEVOPS_EXT_PAT@dev.azure.com/$targetRepo
+git push -u origin --all
