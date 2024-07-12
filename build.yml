@@ -20,6 +20,7 @@ parameters:
   displayName: 'Task or Ticket ID'
 
 variables:
+ - group: PipelineOfPipeline
  - name: organization
    value: arun4duraisamy0719
  - name: project
@@ -28,6 +29,7 @@ variables:
    value: 'Arun Duraisamy'
  - name: git_user_email
    value: 'Arun4.Duraisamy@gmail.com'
+
 
 stages:
 
@@ -38,14 +40,15 @@ stages:
     - script: |
         pip install azure-devops
       displayName: 'Install Azure DevOps CLI'
-
-    - script: |
-        ./createRepository.sh "$organization" "$project" "$repository_name"
+        
+    - task: AzureCLI@2
       displayName: 'Git Repositoy creation script'
-      env:
-        organization: 'https://dev.azure.com/$(organization)'
-        project: $(project)
-        repository_name: '${{ parameters.service }}'
+      inputs:
+        azureSubscription: 'BicepDeploymentConnection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          ./createRepository.sh "https://dev.azure.com/$(organization)" "$(project)" "${{ parameters.service }}"
 
     - task: DownloadSecureFile@1
       inputs:
@@ -56,25 +59,25 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          git clone https://$(System.AccessToken)@dev.azure.com/$(targetRepo).git target-repo
+          git clone https://$(AZURE_DEVOPS_PAT)@dev.azure.com/$(targetRepo).git target-repo
           cd target-repo
           cp ../src/bicep/azure-pipeline.yml azure-pipeline.yml 
           git config --global user.email "$git_user_email"
           git config --global user.name "$git_user_name"
           git add azure-pipeline.yml 
           git commit -m "Add azure-pipeline.yml file via Azure Pipeline"
-          git push https://$(System.AccessToken)@dev.azure.com/$(targetRepo).git
+          git push https://$(AZURE_DEVOPS_PAT)@dev.azure.com/$(targetRepo).git
       env:
-        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+        AZURE_DEVOPS_PAT: $(AZURE_DEVOPS_PAT)
         targetRepo: 'arun4duraisamy0719/Bicep-demo/_git/${{ parameters.service }}'
         git_user_name: $(git_user_name)
         git_user_email: $(git_user_email)
         
-    - script: |
-        ./createRepository.sh "$organization" "$project" "$repository_name" "$pipeline_name"
+    - task: AzureCLI@2
       displayName: 'Release Pipeline creation script'
-      env:
-        organization: 'https://dev.azure.com/$(organization)'
-        project: $(project)
-        repository_name: '${{ parameters.service }}'
-        pipeline_name: '${{ parameters.service }}'
+      inputs:
+        azureSubscription: 'BicepDeploymentConnection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          ./createReleasePipeline.sh "https://dev.azure.com/$(organization)" "$(project)" "${{ parameters.service }}" "${{ parameters.service }}"
