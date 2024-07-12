@@ -20,6 +20,13 @@ pipeline_name=$4
 #repo="YOUR_REPO_NAME"
 #pipeline_name="Sample Pipeline"
 
+echo "Input Values"
+echo "organization: $organization"
+echo "project: $project"
+echo "repo: $repo"
+echo "pipeline_name: $pipeline_name"
+echo ""
+
  # Configure Azure DevOps CLI with PAT
 echo $AZURE_DEVOPS_EXT_PAT | az devops login --organization $organization
 

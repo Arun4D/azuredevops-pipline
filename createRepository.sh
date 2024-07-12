@@ -13,6 +13,11 @@ organization=$1
 project=$2
 repository_name=$3
 
+echo "Input Values"
+echo "organization: $organization"
+echo "project: $project"
+echo "repository_name: $repository_name"
+echo ""
  # Configure Azure DevOps CLI with PAT
 echo $AZURE_DEVOPS_EXT_PAT | az devops login --organization $organization
 
