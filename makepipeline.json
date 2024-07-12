@@ -1,0 +1,13 @@
+{
+    "folder": null,
+    "name": "pipeline-made-by-api",
+    "configuration": {
+      "type": "yaml",
+      "path": "/azure-pipelines.yml",
+      "repository": {
+        "id": "guid-of-repo-id",
+        "name": "my-repo",
+        "type": "azureReposGit"
+      }
+    }
+  }

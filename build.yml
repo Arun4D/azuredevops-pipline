@@ -22,6 +22,16 @@ parameters:
   default: ''
   displayName: 'Task or Ticket ID'
 
+variables:
+ - name: organization
+   value: arun4duraisamy0719
+ - name: project
+   value: Bicep-demo
+ - name: git_user_name
+   value: 'Arun Duraisamy'
+ - name: git_user_email
+   value: 'Arun4.Duraisamy@gmail.com'
+
 stages:
 
 - stage: 'validate_microservice_stage'
@@ -29,8 +39,45 @@ stages:
   - job: 'validate_microservice_job'
     steps:
     - script: |
-        ./createRepo.sh "$service" "$AuthorizationHeaderText"
-      displayName: 'Run Create Repo sript'
+        pip install azure-devops
+      displayName: 'Install Azure DevOps CLI'
+
+    - script: |
+        ./createRepository.sh "$organization" "$project" "$repository_name"
+      displayName: 'Git Repositoy creation script'
       env:
-        service: '${{ parameters.service }}'
-        AuthorizationHeaderText: ${{ parameters.AuthorizationHeaderText }}
+        organization: 'https://dev.azure.com/$(organization)'
+        project: $(project)
+        repository_name: '${{ parameters.service }}'
+
+    - task: DownloadSecureFile@1
+      inputs:
+        secureFile: 'PAT'
+    
+    - task: Bash@3
+      displayName: 'Clone the target repository'
+      inputs:
+        targetType: 'inline'
+        script: |
+          git clone https://$(System.AccessToken)@dev.azure.com/$(targetRepo).git target-repo
+          cd target-repo
+          cp ../src/bicep/azure-pipeline.yml azure-pipeline.yml 
+          git config --global user.email "$git_user_email"
+          git config --global user.name "$git_user_name"
+          git add azure-pipeline.yml 
+          git commit -m "Add azure-pipeline.yml file via Azure Pipeline"
+          git push https://$(System.AccessToken)@dev.azure.com/$(targetRepo).git
+      env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+        targetRepo: 'arun4duraisamy0719/Bicep-demo/_git/${{ parameters.service }}'
+        git_user_name: $(git_user_name)
+        git_user_email: $(git_user_email)
+        
+    - script: |
+        ./createRepository.sh "$organization" "$project" "$repository_name" "$pipeline_name"
+      displayName: 'Release Pipeline creation script'
+      env:
+        organization: 'https://dev.azure.com/$(organization)'
+        project: $(project)
+        repository_name: '${{ parameters.service }}'
+        pipeline_name: '${{ parameters.service }}'
