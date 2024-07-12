@@ -25,8 +25,11 @@ echo $AZURE_DEVOPS_EXT_PAT | az devops login --organization $organization
 # Azure DevOps login (you may need to authenticate if not already authenticated)
 az devops configure --defaults organization=$organization project=$project
 
-# Create the repository
-az repos create --name $repository_name
-
-# Output the created repository details
-az repos show --repository $repository_name
+az repos show --repository "$repository_name" --organization $organization &> /dev/null
+if [ $? -eq 0 ]; then
+  echo "Repository $repository_name already exists."
+else
+  echo "Repository $repository_name does not exist. Creating..."
+  az repos create --name "$repository_name" --organization $organization
+  echo "Repository $$organization created successfully."
+fi

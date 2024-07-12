@@ -25,7 +25,14 @@ git config --global init.defaultBranch main
 git config --global user.email "$git_user_email"
 git config --global user.name "$git_user_name"
 git branch -m main
-cp ./src/bicep/azure-pipeline.yml azure-pipeline.yml 
-git add azure-pipeline.yml 
-git commit -m "Add azure-pipeline.yml file via Azure Pipeline"
+if [ -e azure-pipeline.yml ]
+then
+    echo "File azure-pipeline.yml already exists"
+else
+    echo "File azure-pipeline.yml does not exist. Creating..."
+    cp ./src/bicep/azure-pipeline.yml azure-pipeline.yml 
+    git add azure-pipeline.yml 
+    git commit -m "Add azure-pipeline.yml file via Azure Pipeline"
+fi
+
 git push -u origin --all
