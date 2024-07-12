@@ -59,14 +59,7 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          git clone https://$(AZURE_DEVOPS_EXT_PAT)@dev.azure.com/$(targetRepo).git target-repo
-          cd target-repo
-          cp ../src/bicep/azure-pipeline.yml azure-pipeline.yml 
-          git config --global user.email "$git_user_email"
-          git config --global user.name "$git_user_name"
-          git add azure-pipeline.yml 
-          git commit -m "Add azure-pipeline.yml file via Azure Pipeline"
-          git push https://$(AZURE_DEVOPS_EXT_PAT)@dev.azure.com/$(targetRepo).git
+          ./cloneRepository.sh "$targetRepo" "$git_user_email" "$git_user_name"
       env:
         AZURE_DEVOPS_EXT_PAT: $(AZURE_DEVOPS_PAT) 
         targetRepo: 'arun4duraisamy0719/Bicep-demo/_git/${{ parameters.service }}'
